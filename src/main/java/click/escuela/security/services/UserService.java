@@ -1,6 +1,5 @@
 package click.escuela.security.services;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +26,7 @@ public class UserService implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) {
-		List<Role> roles = roleRepository.findAll();
-		if(roles.isEmpty()) {
-			createRoles();
-		}
-		if(userRepository.findAll().isEmpty()) {
-			createUsers();
-		}
+		
 		final User user = userRepository.findByName(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("Invalid username or password");
@@ -55,52 +48,6 @@ public class UserService implements UserDetailsService{
 		User userToSave = User.builder().name(user.getName()).password(user.getPassword()).role(userRole).build();
 
 		return userRepository.save(userToSave);
-	}
-	
-	public void createRoles() {
-		Role role = new Role(UUID.randomUUID(),"ADMIN","administrador");
-		roleRepository.save(role);
-		
-		role = new Role(UUID.randomUUID(),"TEACHER","teacher");
-		roleRepository.save(role);
-
-		role = new Role(UUID.randomUUID(),"STUDENT","student");
-		roleRepository.save(role);
-
-		role = new Role(UUID.randomUUID(),"PARENT","parent");
-		roleRepository.save(role);
-	}
-	
-	public void createUsers() {
-		Role roleAdmin = roleRepository.findByName("ADMIN");
-		Role roleTeacher = roleRepository.findByName("TEACHER");
-		Role roleStudent = roleRepository.findByName("STUDENT");
-
-		User user = User.builder().id(UUID.randomUUID())
-				.name("admin")
-				.password("$2a$04$GJ85Ihcglhbqac2zc3z3A.C3v55FMmN8.qGQ8FlNBCuyLtQ5/TyMO")
-				.role(roleAdmin)
-				.build();
-		
-		userRepository.save(user);
-		
-		 user = User.builder().id(UUID.randomUUID())
-					.name("teacher")
-					.password("$2a$04$XWpgKkCQaVRuXjB5f1hzt.pDa2NAzntroH3bELICZy8R8Q0L0SShO")
-					.role(roleTeacher)
-					.build();
-		 
-		 userRepository.save(user);
-		 
-		 user = User.builder().id(UUID.randomUUID())
-					.name("student")
-					.password("$2a$04$bmmWXec6YkFIesIxv2gx7.NbxRcMJ4UoRKT9Qoqk09pKegfcr3Zla")
-					.role(roleStudent)
-					.build();
-		 
-		 userRepository.save(user);
-
-		 
 	}
 
 }
