@@ -5,3 +5,6 @@ chmod +x /home/ec2-user/server/security/server_start.sh
 chmod +x /home/ec2-user/server/security/server_stop.sh
 chmod +x /home/ec2-user/server/security/server_clear.sh
 chmod +x /home/ec2-user/server/security/fix_privileges.sh
+chmod +x /home/ec2-user/server/security/logs
+chmod +x /home/ec2-user/server/security/logs/error.log
+chmod +x /home/ec2-user/server/security/logs/debug.log
