@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 import click.escuela.security.api.AuthorizationApi;
+import click.escuela.security.api.dtos.ResponseLogin;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,7 +17,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
+
 import click.escuela.security.utils.TokenProvider;
+import io.jsonwebtoken.JwtBuilder;
+
 import static click.escuela.security.utils.Constants.HEADER_AUTHORIZATION_KEY;
 import static click.escuela.security.utils.Constants.TOKEN_BEARER_PREFIX;
 
@@ -45,8 +50,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
+		String role = authResult.getAuthorities().toString();
+		JwtBuilder token = TokenProvider.generateToken(authResult);
 
-		String token = TokenProvider.generateToken(authResult);
-		response.addHeader(HEADER_AUTHORIZATION_KEY, TOKEN_BEARER_PREFIX + " " + token);
+		ObjectMapper objectMapper = new ObjectMapper();
+		
+		ResponseLogin responseLogin = new ResponseLogin(token.compact(), role, LocalDateTime.now());
+		String responseJson = objectMapper.writeValueAsString(responseLogin);
+
+		response.getWriter().write(responseJson);
 	}
 }

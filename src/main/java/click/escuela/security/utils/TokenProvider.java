@@ -19,7 +19,7 @@ public class TokenProvider {
 	private TokenProvider() {
 	}
 
-	public static String generateToken(Authentication authentication) {
+	public static JwtBuilder generateToken(Authentication authentication) {
 		// Genera el token con roles, issuer, fecha, expiración (8h)
 		final String authorities = authentication.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority)
@@ -30,8 +30,8 @@ public class TokenProvider {
 				.signWith(SignatureAlgorithm.HS256, SIGNING_KEY)
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setIssuer(ISSUER_TOKEN)
-				.setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS*1000))
-				.compact();
+				.setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS*1000));
+				//.compact();
 	}
 
 	public static UsernamePasswordAuthenticationToken getAuthentication(final String token,
