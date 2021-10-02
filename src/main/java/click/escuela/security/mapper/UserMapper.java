@@ -13,7 +13,7 @@ public class UserMapper {
 	}*/
 
 	public static User toDomain(AuthorizationApi authorizationRequest) {
-		return User.builder().name(authorizationRequest.getUserName()).password(authorizationRequest.getPassword())
+		return User.builder().userName(authorizationRequest.getUserName()).password(authorizationRequest.getPassword())
 				.build();
 	}
 }

@@ -52,10 +52,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			Authentication authResult) throws IOException, ServletException {
 		String role = authResult.getAuthorities().toString();
 		JwtBuilder token = TokenProvider.generateToken(authResult);
-
+		String[] fields = authResult.getName().split(",");
 		ObjectMapper objectMapper = new ObjectMapper();
 		
-		ResponseLogin responseLogin = new ResponseLogin(token.compact(), role, LocalDateTime.now());
+		ResponseLogin responseLogin = new ResponseLogin(token.compact(), role, fields[0], fields[1], LocalDateTime.now());
 		String responseJson = objectMapper.writeValueAsString(responseLogin);
 
 		response.getWriter().write(responseJson);

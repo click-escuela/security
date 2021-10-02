@@ -25,7 +25,7 @@ public class User {
 	private UUID id;
 
 	@Column
-	private String name;
+	private String userName;
 
 	@Column
 	private String password;
@@ -33,4 +33,11 @@ public class User {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_role", nullable = false)
 	private Role role;
+	
+	@ManyToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name="id_school")
+	private School school;
+	
+	@Column
+	private String name;
 }

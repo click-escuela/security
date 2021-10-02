@@ -27,7 +27,7 @@ public class UserService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) {
 		
-		final User user = userRepository.findByName(username);
+		final User user = userRepository.findByUserName(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("Invalid username or password");
 		}
@@ -45,7 +45,7 @@ public class UserService implements UserDetailsService{
 	public User save(User user) {
 		Role userRole = roleRepository.findByName(user.getRole().getName());
 
-		User userToSave = User.builder().name(user.getName()).password(user.getPassword()).role(userRole).build();
+		User userToSave = User.builder().userName(user.getUserName()).password(user.getPassword()).role(userRole).build();
 
 		return userRepository.save(userToSave);
 	}

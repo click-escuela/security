@@ -19,6 +19,8 @@ public class ResponseLogin {
 
 	private String token;
 	private String role;
+	private String name;
+	private String schoolId;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
