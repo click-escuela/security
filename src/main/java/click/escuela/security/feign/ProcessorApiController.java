@@ -12,7 +12,7 @@ public interface ProcessorApiController {
 
 	// EmailController
 	@PostMapping(value = "/school/{schoolId}/email")
-	public String automaticCreation(@RequestParam(value = "password") String password,
+	public String sendEmail(@RequestParam(value = "password") String password,
 			@RequestParam("userName") String userName, @RequestParam("email") String email,
 			@PathVariable("schoolId") String schoolId);
 
