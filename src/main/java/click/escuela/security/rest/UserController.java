@@ -8,6 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import click.escuela.security.api.AuthorizationApi;
+import click.escuela.security.api.UserApi;
+import click.escuela.security.exception.SchoolException;
 import click.escuela.security.mapper.UserMapper;
 import click.escuela.security.model.User;
 import click.escuela.security.services.UserService;
@@ -16,9 +18,6 @@ import click.escuela.security.services.UserService;
 @RequestMapping("/users")
 @CrossOrigin
 public class UserController {
-
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Autowired
 	private UserService userService;
@@ -31,16 +30,14 @@ public class UserController {
 		if (user == null) {
 			return ResponseEntity.notFound().build();
 		}
-
-		//UserResponse userResponse = UserMapper.toResponse(user);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping
-	public ResponseEntity<User> saveUser(@RequestBody AuthorizationApi userRequest) {
-		userRequest.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
-		final User userToSave = userService.save(UserMapper.toDomain(userRequest));
+	public ResponseEntity<User> saveUser(@RequestBody UserApi userApi) throws SchoolException {
+		
+		final User userToSave = userService.save(userApi);
 
 		return new ResponseEntity<>(userToSave, HttpStatus.OK);
 	}

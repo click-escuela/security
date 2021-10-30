@@ -14,7 +14,11 @@ public class UserDetailsMapper {
 
 	private UserDetailsMapper() {}
 	public static UserDetails build(User user) {
-		String fields = user.getName().concat(",").concat(user.getSchool().getId().toString()).concat(",").concat(user.getUserName());
+		String fields = user.getName()
+				.concat(",")
+				.concat(user.getSchool().getId().toString())
+				.concat(",")
+				.concat(user.getUserName());
 		return new org.springframework.security.core.userdetails.User(fields, user.getPassword(), getAuthorities(user));
 	}
 

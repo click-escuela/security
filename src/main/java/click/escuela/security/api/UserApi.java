@@ -8,6 +8,7 @@ import lombok.Getter;
 public class UserApi {
 
 	private String name;
-	private String password;
+	private String surname;
+	private String schoolId;
 	private Role role;
 }
