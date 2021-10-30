@@ -18,6 +18,8 @@ public class AuthorizationApi implements Serializable {
 	private String userName;
 
 	private String password;
+	
+	private String email;
 
 	public AuthorizationApi() {
 	}

@@ -14,6 +14,6 @@ public class UserMapper {
 
 	public static User toDomain(AuthorizationApi authorizationRequest) {
 		return User.builder().userName(authorizationRequest.getUserName()).password(authorizationRequest.getPassword())
-				.build();
+				.email(authorizationRequest.getEmail()).build();
 	}
 }

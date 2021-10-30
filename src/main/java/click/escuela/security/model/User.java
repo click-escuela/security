@@ -29,6 +29,9 @@ public class User {
 
 	@Column
 	private String password;
+	
+	@Column 
+	private String email;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_role", nullable = false)

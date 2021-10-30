@@ -5,13 +5,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import click.escuela.security.api.AuthorizationApi;
 import click.escuela.security.mapper.UserMapper;
 import click.escuela.security.model.User;
+import click.escuela.security.services.EmailService;
 import click.escuela.security.services.UserService;
 
+@Controller
 @RestController
 @RequestMapping("/users")
 @CrossOrigin
@@ -22,6 +25,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private EmailService emailService;
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/{id}")
@@ -41,7 +47,7 @@ public class UserController {
 	public ResponseEntity<User> saveUser(@RequestBody AuthorizationApi userRequest) {
 		userRequest.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
 		final User userToSave = userService.save(UserMapper.toDomain(userRequest));
-
+		//emailService.sendEmail(userRequest.getPassword(), userRequest.getUserName(), email, schoolId);
 		return new ResponseEntity<>(userToSave, HttpStatus.OK);
 	}
 	
