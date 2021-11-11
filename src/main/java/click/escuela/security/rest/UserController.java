@@ -21,7 +21,6 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<User> getUser(@PathVariable String id) {
@@ -39,5 +38,4 @@ public class UserController {
 		final UserApi userToSave = userService.save(userApi);
 		return new ResponseEntity<>(userToSave, HttpStatus.OK);
 	}
-	
 }
