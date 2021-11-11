@@ -71,7 +71,7 @@ public class UserService implements UserDetailsService {
 			userToSave.setEmail(user.getEmail());
 			userToSave.setSchool(school);
 			userToSave.setUserId(UUID.fromString(user.getUserId()));
-			userToSave = userRepository.save(userToSave);
+			userRepository.save(userToSave);
 			user.setPassword(password);
 			user.setUserName(userName);
 			return user;
@@ -81,7 +81,7 @@ public class UserService implements UserDetailsService {
 		}
 	}
 	
-	public Boolean userNoExist(String userId) {
+	private Boolean userNoExist(String userId) {
 		Boolean userNoExist = false;
 		Optional<User> user = userRepository.findByUserId(UUID.fromString(userId));
 		if(!user.isPresent()) {
@@ -90,7 +90,7 @@ public class UserService implements UserDetailsService {
 		return userNoExist;
 	}
 
-	public String generateUser(String name, String surname) {
+	private String generateUser(String name, String surname) {
 		String username = name.substring(0, 1).concat(surname);
 		boolean existUsername = true;
 		Integer count = 0;
