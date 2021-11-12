@@ -3,6 +3,7 @@ package click.escuela.security.service;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -48,6 +49,7 @@ public class UserServiceTest {
 	private UserApi userApi;
 	private UUID userId;
 	private UUID schoolId;
+	private Role userRole = new Role();
 
 	@Before
 	public void setUp() {
@@ -59,7 +61,6 @@ public class UserServiceTest {
 		School school = new School();
 		school.setId(UUID.fromString(userApi.getSchoolId()));
 		Optional<School> optionalSchool = Optional.of(school);
-		Role userRole = new Role();
 		userRole.setDescription("Role");
 		userRole.setId(UUID.randomUUID());
 		userRole.setName(userApi.getRole());
@@ -116,5 +117,32 @@ public class UserServiceTest {
 		when(userRepository.findById(id)).thenReturn(optional);
 		userService.getUser(id.toString());
 		verify(userRepository).findById(id);
+	}
+	
+	
+	@Test
+	public void whenLoadByUserIsOk() {
+		User user = new User();
+		School school = new School();
+		school.setId(schoolId);
+		user.setName(userApi.getName());
+		user.setId(UUID.randomUUID());
+		user.setSchool(school);
+		user.setUserName(userApi.getUserName());
+		user.setRole(userRole);
+		user.setPassword(userApi.getPassword());
+		Optional<User> optional = Optional.of(user);
+		when(userRepository.findByUserName(userApi.getUserName())).thenReturn(optional);
+		userService.loadUserByUsername(userApi.getUserName());
+		verify(userRepository).findByUserName(userApi.getUserName());
+		
+		userApi.setUserName("Cualquiera");
+		boolean hasError = false;
+		try {
+			userService.loadUserByUsername(userApi.getUserName());
+		} catch(UsernameNotFoundException e) {
+			hasError = true;
+		}
+		assertThat(hasError).isTrue();
 	}
 }
