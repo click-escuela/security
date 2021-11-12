@@ -55,7 +55,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	public UserApi save(UserApi user) throws SchoolException {
-		School school = schoolRepository.findById(UUID.fromString(user.getSchoolId())).map(p -> p)
+		School school = schoolRepository.findById(UUID.fromString(user.getSchoolId()))
 				.orElseThrow(() -> new SchoolException("La escuela no existe"));
 
 		String password = generatePass(user.getSurname());
