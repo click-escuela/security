@@ -1,14 +1,26 @@
 package click.escuela.security.api;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@AllArgsConstructor
+@Setter
+@SuperBuilder
 public class UserApi {
 
 	private String name;
 	private String surname;
+	private String email;
 	private String schoolId;
-	private Role role;
+	private String role;
+	private String userId;
+	
+	@JsonProperty(value = "password", required = false)
+	private String password;
+	
+	@JsonProperty(value = "userName", required = false)
+	private String userName;
 }
