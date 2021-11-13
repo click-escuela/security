@@ -3,6 +3,7 @@ package click.escuela.security.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @AllArgsConstructor
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 public class Role {

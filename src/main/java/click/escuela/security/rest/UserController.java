@@ -4,25 +4,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import click.escuela.security.api.AuthorizationApi;
-import click.escuela.security.mapper.UserMapper;
+import click.escuela.security.api.UserApi;
+import click.escuela.security.exception.SchoolException;
 import click.escuela.security.model.User;
 import click.escuela.security.services.UserService;
 
+@Controller
 @RestController
 @RequestMapping("/users")
 @CrossOrigin
 public class UserController {
 
 	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-	@Autowired
 	private UserService userService;
-
+	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<User> getUser(@PathVariable String id) {
@@ -31,18 +29,13 @@ public class UserController {
 		if (user == null) {
 			return ResponseEntity.notFound().build();
 		}
-
-		//UserResponse userResponse = UserMapper.toResponse(user);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping
-	public ResponseEntity<User> saveUser(@RequestBody AuthorizationApi userRequest) {
-		userRequest.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
-		final User userToSave = userService.save(UserMapper.toDomain(userRequest));
-
+	public ResponseEntity<UserApi> saveUser(@RequestBody UserApi userApi) throws SchoolException {
+		final UserApi userToSave = userService.save(userApi);
 		return new ResponseEntity<>(userToSave, HttpStatus.OK);
 	}
-	
 }
